@@ -1,29 +1,68 @@
+// import { defineSchema, defineTable } from "convex/server";
+// import { v } from "convex/values";
+
+// export default defineSchema({
+//   // Products table
+//   products: defineTable({
+//     name: v.string(),
+//     description: v.string(),
+//     price: v.number(),
+//     category: v.string(), // "headphones", "speakers", "amplifiers", etc.
+//     brand: v.string(),
+//     imageUrl: v.string(),
+//     imageUrls: v.optional(v.array(v.string())), // Multiple images
+//     stock: v.number(),
+//     featured: v.boolean(), // For homepage featured products
+//     specifications: v.optional(
+//       v.object({
+//         impedance: v.optional(v.string()),
+//         frequency: v.optional(v.string()),
+//         power: v.optional(v.string()),
+//         // Add more as needed
+//       })
+//     ),
+//   })
+//     .index("by_category", ["category"])
+//     .index("by_featured", ["featured"]),
+
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  // Products table
   products: defineTable({
+    slug: v.string(),
     name: v.string(),
-    description: v.string(),
-    price: v.number(),
-    category: v.string(), // "headphones", "speakers", "amplifiers", etc.
-    brand: v.string(),
     imageUrl: v.string(),
-    imageUrls: v.optional(v.array(v.string())), // Multiple images
-    stock: v.number(),
-    featured: v.boolean(), // For homepage featured products
-    specifications: v.optional(
+    category: v.string(),
+    categoryImage: v.string(),
+    new: v.boolean(),
+    price: v.number(),
+    description: v.string(),
+    features: v.string(),
+
+    includes: v.array(
       v.object({
-        impedance: v.optional(v.string()),
-        frequency: v.optional(v.string()),
-        power: v.optional(v.string()),
-        // Add more as needed
+        quantity: v.number(),
+        item: v.string(),
+      })
+    ),
+
+    gallery: v.object({
+      first: v.string(),
+      second: v.string(),
+      third: v.string(),
+    }),
+
+    others: v.array(
+      v.object({
+        slug: v.string(),
+        name: v.string(),
+        imageUrl: v.string(),
       })
     ),
   })
-    .index("by_category", ["category"])
-    .index("by_featured", ["featured"]),
+    .index("by_slug", ["slug"])
+    .index("by_category", ["category"]),
 
   // Orders table
   orders: defineTable({
