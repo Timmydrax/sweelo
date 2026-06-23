@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sweelo",
+  title: "Sweelo Store - Premium Audio Equipment",
   description: "Shop the best headphones, speakers, and audio gear online.",
 };
 
