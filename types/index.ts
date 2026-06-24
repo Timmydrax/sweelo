@@ -1,6 +1,9 @@
+import { Id } from "@/convex/_generated/dataModel";
+
 // src/lib/types.ts
 export interface Product {
-  id: number;
+  _id: Id<"products">;
+  _creationTime: number;
   slug: string; // URL-friendly name (e.g., "xx99-mark-ii")
   name: string; // Display name
   imageUrl: string;
@@ -26,30 +29,35 @@ export interface Product {
   }>;
 }
 
-export interface CartItem {
-  product: Product;
+// Order/Cart Item interface
+export interface OrderItem {
+  productId: Id<"products">;
+  productName: string;
+  price: number;
   quantity: number;
-}
-
-export interface CheckoutForm {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  zipCode: string;
-  country: string;
-  paymentMethod: "e-money" | "cash-on-delivery";
+  imageUrl: string;
 }
 
 export interface Order {
-  orderId: string;
-  customer: CheckoutForm;
-  items: CartItem[];
+  _id: Id<"orders">;
+  _creationTime: number;
+  orderNumber: string;
+  customerEmail: string;
+  customerName: string;
+  customerPhone?: string;
+  shippingAddress: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+  items: OrderItem[];
   subtotal: number;
+  tax: number;
   shipping: number;
-  vat: number;
   total: number;
+  status: string;
+  paymentStatus: string;
   createdAt: number;
-  status: "pending" | "completed";
 }

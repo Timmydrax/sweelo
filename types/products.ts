@@ -1,9 +1,11 @@
 // src/lib/products.ts
+import { Id } from "@/convex/_generated/dataModel";
 import { Product } from "./index";
 
 export const products: Product[] = [
   {
-    id: 1,
+    _id: "1" as unknown as Id<"products">,
+    _creationTime: Date.now(),
     slug: "yx1-earphones",
     name: "YX1 Wireless Earphones",
     imageUrl: "./assets/product-yx1-earphones/mobile/image-product.jpg",
@@ -62,7 +64,8 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 2,
+    _id: "2" as unknown as Id<"products">,
+    _creationTime: Date.now(),
     slug: "xx59-headphones",
     name: "XX59 Headphones",
     imageUrl: "./assets/product-xx59-headphones/desktop/image-product.jpg",
@@ -117,7 +120,8 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 3,
+    _id: "3" as unknown as Id<"products">,
+    _creationTime: Date.now(),
     slug: "xx99-mark-one-headphones",
     name: "XX99 Mark I Headphones",
     imageUrl:
@@ -179,7 +183,8 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 4,
+    _id: "4" as unknown as Id<"products">,
+    _creationTime: Date.now(),
     slug: "xx99-mark-two-headphones",
     name: "XX99 Mark II Headphones",
     imageUrl:
@@ -246,7 +251,8 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 5,
+    _id: "5" as unknown as Id<"products">,
+    _creationTime: Date.now(),
     slug: "zx7-speaker",
     name: "ZX7 Speaker",
     imageUrl: "./assets/product-zx7-speaker/desktop/image-product.jpg",
@@ -308,7 +314,8 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 6,
+    _id: "6" as unknown as Id<"products">,
+    _creationTime: Date.now(),
     slug: "zx9-speaker",
     name: "ZX9 Speaker",
     imageUrl: "./assets/product-zx9-speaker/desktop/image-product.jpg",
@@ -373,7 +380,7 @@ export const products: Product[] = [
 
 // Helper functions
 export function getProductsByCategory(
-  category: "headphones" | "speakers" | "earphones"
+  category: "headphones" | "speakers" | "earphones",
 ) {
   return products.filter((p) => p.category === category);
 }
