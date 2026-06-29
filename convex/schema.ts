@@ -1,77 +1,45 @@
-// import { defineSchema, defineTable } from "convex/server";
-// import { v } from "convex/values";
-
-// export default defineSchema({
-//   // Products table
-//   products: defineTable({
-//     name: v.string(),
-//     description: v.string(),
-//     price: v.number(),
-//     category: v.string(), // "headphones", "speakers", "amplifiers", etc.
-//     brand: v.string(),
-//     imageUrl: v.string(),
-//     imageUrls: v.optional(v.array(v.string())), // Multiple images
-//     stock: v.number(),
-//     featured: v.boolean(), // For homepage featured products
-//     specifications: v.optional(
-//       v.object({
-//         impedance: v.optional(v.string()),
-//         frequency: v.optional(v.string()),
-//         power: v.optional(v.string()),
-//         // Add more as needed
-//       })
-//     ),
-//   })
-//     .index("by_category", ["category"])
-//     .index("by_featured", ["featured"]),
 
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  // Products table - matching your custom Product interface
   products: defineTable({
-    slug: v.string(),
-    name: v.string(),
-    imageUrl: v.string(),
-    category: v.string(),
-    categoryImage: v.string(),
-    new: v.boolean(),
+    slug: v.string(), // URL-friendly name (e.g., "xx99-mark-ii")
+    name: v.string(), // Display name
+    imageUrl: v.string(), // Main product image
+    category: v.union(v.literal("headphones"), v.literal("speakers"), v.literal("earphones")),
+    categoryImage: v.string(), // Image for category listing
+    new: v.boolean(), // Is this a new product?
     price: v.number(),
     description: v.string(),
-    features: v.string(),
-
-    includes: v.array(
-      v.object({
-        quantity: v.number(),
-        item: v.string(),
-      })
-    ),
-
+    features: v.string(), // Detailed features text
+    includes: v.array(v.object({
+      quantity: v.number(),
+      item: v.string(),
+    })),
     gallery: v.object({
       first: v.string(),
       second: v.string(),
       third: v.string(),
     }),
-
-    others: v.array(
-      v.object({
-        slug: v.string(),
-        name: v.string(),
-        imageUrl: v.string(),
-      })
-    ),
+    others: v.array(v.object({
+      slug: v.string(),
+      name: v.string(),
+      imageUrl: v.string(),
+    })),
   })
     .index("by_slug", ["slug"])
-    .index("by_category", ["category"]),
+    .index("by_category", ["category"])
+    .index("by_new", ["new"]),
 
   // Orders table
   orders: defineTable({
-    orderNumber: v.string(), // e.g., "ORD-20240101-1234"
+    orderNumber: v.string(),
     customerEmail: v.string(),
     customerName: v.string(),
     customerPhone: v.optional(v.string()),
-
-    // Shipping address
+    
     shippingAddress: v.object({
       street: v.string(),
       city: v.string(),
@@ -79,42 +47,24 @@ export default defineSchema({
       zipCode: v.string(),
       country: v.string(),
     }),
-
-    // Order items (snapshot of products at purchase time)
-    items: v.array(
-      v.object({
-        productId: v.id("products"),
-        productName: v.string(),
-        price: v.number(),
-        quantity: v.number(),
-        imageUrl: v.string(),
-      })
-    ),
-
+    
+    items: v.array(v.object({
+      productId: v.id("products"),
+      productName: v.string(),
+      price: v.number(),
+      quantity: v.number(),
+      imageUrl: v.string(),
+    })),
+    
     subtotal: v.number(),
     tax: v.number(),
     shipping: v.number(),
     total: v.number(),
-
-    status: v.string(), // "pending", "confirmed", "shipped", "delivered"
-    paymentStatus: v.string(), // "pending", "paid", "failed"
-
-    createdAt: v.number(), // timestamp
+    
+    status: v.string(),
+    paymentStatus: v.string(),
+    createdAt: v.number(),
   })
     .index("by_email", ["customerEmail"])
-    .index("by_order_number", ["orderNumber"])
-    .index("by_created_at", ["createdAt"]),
-
-  // Optional: Cart table (for logged-in users or persistent carts)
-  carts: defineTable({
-    userId: v.optional(v.string()), // If you add auth later
-    sessionId: v.string(), // For guest users
-    items: v.array(
-      v.object({
-        productId: v.id("products"),
-        quantity: v.number(),
-      })
-    ),
-    updatedAt: v.number(),
-  }).index("by_session", ["sessionId"]),
+    .index("by_order_number", ["orderNumber"]),
 });
